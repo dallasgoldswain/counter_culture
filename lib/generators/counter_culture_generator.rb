@@ -1,21 +1,22 @@
+# frozen_string_literal: true
+
 require 'rails/generators/active_record'
 
 class CounterCultureGenerator < ActiveRecord::Generators::Base
+  desc 'Create a migration that adds counter-cache columns to a model'
 
-  desc "Create a migration that adds counter-cache columns to a model"
+  argument :counter_cache_columns, required: true, type: :array,
+                                   desc: 'The names of the counter cache columns to add',
+                                   banner: 'counter_cache_one counter_cache_two counter_cache_three ...'
 
-  argument :counter_cache_columns, :required => true, :type => :array,
-    :desc => "The names of the counter cache columns to add",
-    :banner => "counter_cache_one counter_cache_two counter_cache_three ..."
-
-  source_root File.expand_path("../templates", __FILE__)
+  source_root File.expand_path('templates', __dir__)
 
   def generate_migration
-    migration_template "counter_culture_migration.rb.erb", "db/migrate/#{migration_file_name}", migration_version: migration_version
+    migration_template 'counter_culture_migration.rb.erb', "db/migrate/#{migration_file_name}", migration_version: migration_version
   end
 
   def migration_name
-    "add_#{counter_cache_columns.join("_")}_to_#{name.underscore.pluralize}"
+    "add_#{counter_cache_columns.join('_')}_to_#{name.underscore.pluralize}"
   end
 
   def migration_file_name
@@ -30,6 +31,8 @@ class CounterCultureGenerator < ActiveRecord::Generators::Base
     if Rails.version.start_with? '5.'
       "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
     end
+    if Rails.version.start_with? '6.'
+      "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
+    end
   end
-
 end
