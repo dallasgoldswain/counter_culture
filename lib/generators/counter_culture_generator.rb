@@ -28,7 +28,7 @@ class CounterCultureGenerator < ActiveRecord::Generators::Base
   end
 
   def migration_version
-    return unless ['5.', '6.'].any? { |i| include? i }
+    return unless ['5.', '6.'].any? { |i| Rails.version.include? i }
 
     "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
   end
